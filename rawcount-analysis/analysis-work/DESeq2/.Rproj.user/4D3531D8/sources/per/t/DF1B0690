@@ -1,0 +1,27 @@
+{
+    "id": "DF1B0690",
+    "path": "~/Desktop/Projects/JABSOM_2022/Dr_Jijiwa/pirna-snorna-proj4-analysis/counts/count_analysis_07272022/DESeq2/template.R",
+    "project_path": "template.R",
+    "type": "r_source",
+    "hash": "2054538546",
+    "contents": "",
+    "dirty": false,
+    "created": 1660183128318.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "7,18",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1659385964,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1659385964,
+    "read_only": false,
+    "read_only_alternatives": []
+}

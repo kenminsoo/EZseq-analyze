@@ -1,0 +1,109 @@
+#This is a function to a) normalize count matracies
+#b) produce files ready for DESeq2 analysis
+
+
+#load in lengths from mapping to all/the regular genome for normalization
+
+read_summary <- read_delim('hsa_all.summary.tsv', 
+                           delim = "\t", escape_double = FALSE,
+                           trim_ws = TRUE)
+
+#hsa_all_smrna
+
+featurecount_norm_rpkm <- function(read, output_de, output_norm){
+  library(readr)
+  featurecount_table <- read_delim(read, 
+                              delim = "\t", escape_double = FALSE,
+                              trim_ws = TRUE, skip = 1)
+  
+  samples <- colnames(featurecount_table[7:29])
+  non_samples <- colnames(featurecount_table[1:6])
+  
+  storesums <- read_summary[1,2:24] #number of reads
+  
+  rows <- nrow(featurecount_table)
+  
+  rpkm_transformed <- data.frame(matrix(ncol = 0, nrow = rows))
+  rpkm_transformed$Geneid <- featurecount_table$Geneid
+  
+  deseq_all_smrna <- featurecount_table
+  deseq_all_smrna <- deseq_all_smrna[-2:-6]
+  
+  for (sample in samples){
+    rpkm_transformed_col <- (10^9 * featurecount_table[sample]) / (featurecount_table['Length'] * as.numeric(storesums[sample]))
+    rpkm_transformed[ , ncol(rpkm_transformed) + 1] <- rpkm_transformed_col
+    print(rpkm_transformed_col)
+  }
+  write.table(deseq_all_smrna, output_de,sep="\t",quote=F,row.names=F)
+  write.table(rpkm_transformed, output_norm,sep="\t",quote=F,row.names=F)
+}
+
+featurecount_norm <- function(read, output_de, output_norm){
+  library(readr)
+  featurecount_table <- read_delim(read, 
+                                   delim = "\t", escape_double = FALSE,
+                                   trim_ws = TRUE, skip = 1)
+  
+  samples <- colnames(featurecount_table[7:29])
+  non_samples <- colnames(featurecount_table[1:6])
+  
+  storesums <- colSums(featurecount_table[7:29]) #number of reads
+  print(storesums)
+  
+  rows <- nrow(featurecount_table)
+  
+  rpkm_transformed <- data.frame(matrix(ncol = 0, nrow = rows))
+  rpkm_transformed$Geneid <- featurecount_table$Geneid
+  
+  deseq_all_smrna <- featurecount_table
+  deseq_all_smrna <- deseq_all_smrna[-2:-6]
+  
+  for (sample in samples){
+    rpkm_transformed_col <- (10^9 * featurecount_table[sample]) / (featurecount_table['Length'] * storesums[sample])
+    rpkm_transformed[ , ncol(rpkm_transformed) + 1] <- rpkm_transformed_col
+    print(rpkm_transformed_col)
+  }
+  write.table(deseq_all_smrna, output_de,sep="\t",quote=F,row.names=F)
+  write.table(rpkm_transformed, output_norm,sep="\t",quote=F,row.names=F)
+}
+
+featurecount_norm_rpkm('hsa_pirna.tsv', 'deseq_pirna.tsv','rpkm_pirna.tsv')
+featurecount_norm_rpkm('hsa_all.tsv','deseq_all.tsv', 'rpkm_all.tsv')
+featurecount_norm_rpkm('hsa_mirna.tsv','deseq_mirna.tsv', 'rpkm_mirna.tsv')
+featurecount_norm_rpkm('hsa_all_smrna.tsv', 'deseq_all_smrna.tsv','rpkm_smrna.tsv')
+
+featurecount_norm('hsa_pirna.tsv', 'deseq_pirna.tsv','rpkm_pirna.tsv')
+featurecount_norm('hsa_all.tsv','deseq_all.tsv', 'rpkm_all.tsv')
+featurecount_norm('hsa_mirna.tsv','deseq_mirna.tsv', 'rpkm_mirna.tsv')
+featurecount_norm('hsa_all_smrna.tsv', 'deseq_all_smrna.tsv','rpkm_smrna.tsv')
+
+##tpm
+featurecount_norm_tpm <- function(read_rpkm,output_tpm){
+  library(readr)
+  rpkm_table <- read_delim(read_rpkm, 
+                                   delim = "\t", escape_double = FALSE,
+                                   trim_ws = TRUE)
+  
+  samples <- colnames(rpkm_table[2:24])
+  
+  storeRPKMsums <- colSums(rpkm_table[2:24]) #sum of RPKM
+  
+  rows <- nrow(rpkm_table)
+  
+  tpm_transformed <- data.frame(matrix(ncol = 0, nrow = rows))
+  tpm_transformed$Geneid <- rpkm_table$Geneid
+  
+  for (sample in samples){
+    tpm_transformed_col <- (10^6 * rpkm_table[sample]) / (storeRPKMsums[sample])
+    tpm_transformed[ , ncol(tpm_transformed) + 1] <- tpm_transformed_col
+  }
+  
+  write.table(tpm_transformed, output_tpm,sep="\t",quote=F,row.names=F)
+}
+
+featurecount_norm_tpm('rpkm_pirna.tsv', 'tpm_pirna.tsv')
+featurecount_norm_tpm('rpkm_all.tsv', 'tpm_all.tsv')
+featurecount_norm_tpm('rpkm_mirna.tsv', 'tpm_mirna.tsv')
+featurecount_norm_tpm('rpkm_smrna.tsv', 'tpm_smrna.tsv')
+
+

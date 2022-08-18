@@ -1,0 +1,28 @@
+{
+    "id": "51A49BDD",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1659429543678.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "id": "a654cf918d654614bff936d655ee6860",
+        "name": "data_frame",
+        "title": "data_frame",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1169911741515928275,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1659429543678,
+    "read_only": false,
+    "read_only_alternatives": []
+}
