@@ -1,11 +1,18 @@
 #!/bin/bash
 
-#first install large packages
-gdown_pip=$(pip show gdown)
-gdown_state=$(echo ${test+1})
-if [gdown_state=''];then
-    pip install gdown
-fi
+#installer
+
+#first let's get all the big files needed for installation and function
+#python3 is needed
+pipx install gdown
+
+gdown https://drive.google.com/drive/folders/1uz8KoY63oWI_ayx_w7wjjlxkkkAinO_N -O /tmp/folder --folder
+
+#move alignment files to correct place.
+mv *.bt2 ..
+cd ..
+mv *.bt2 fastq-rawcount/unaligned
+cd installer
 
 #install anaconda3
 cur_user=$(id -un)
@@ -19,7 +26,6 @@ source /Users/$cur_user/anaconda3/bin/activate
 conda config --add channels defaults
 conda config --add channels bioconda
 conda config --add channels conda-forge
-conda config --set channel_priority strict
 
 conda create -n ezanalyze --yes
 
