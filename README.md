@@ -1,4 +1,4 @@
-# EZanalyze
+# EZanalyze (wip)
 ## Ken Nakatsu 08/17/2022
 
 ## Usage
